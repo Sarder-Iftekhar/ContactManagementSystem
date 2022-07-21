@@ -18,14 +18,14 @@ namespace ContactManagement
         }
 
         public virtual DbSet<Contact> Contacts { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserRrgistration> UserRrgistrations { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseOracle("User Id=PROJECT;Password=project;Data Source=10.11.201.203:1523/MBLHRM;");
+                optionsBuilder.UseOracle("User Id=PROJECT;Password=project;Data Source=10.11.201.203:1523/mblhrm;");
             }
         }
 
@@ -36,9 +36,12 @@ namespace ContactManagement
 
             modelBuilder.Entity<Contact>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("CONTACTS");
+
+                entity.Property(e => e.ContactId)
+                    .HasColumnType("NUMBER")
+                    .HasColumnName("CONTACT_ID")
+                    .HasDefaultValueSql("\"PROJECT\".\"CONTACTS_ID_PK\".nextval ");
 
                 entity.Property(e => e.Address)
                     .HasMaxLength(500)
@@ -46,35 +49,26 @@ namespace ContactManagement
                     .HasColumnName("ADDRESS");
 
                 entity.Property(e => e.Birthdate)
-                    .HasColumnType("NUMBER")
+                    .HasColumnType("DATE")
                     .HasColumnName("BIRTHDATE");
 
-                entity.Property(e => e.Chat)
-                    .HasMaxLength(2000)
-                    .IsUnicode(false)
-                    .HasColumnName("CHAT");
-
                 entity.Property(e => e.City)
-                    .HasMaxLength(500)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("CITY");
 
                 entity.Property(e => e.Company)
-                    .HasMaxLength(500)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("COMPANY");
 
-                entity.Property(e => e.ContactId)
-                    .HasColumnType("NUMBER")
-                    .HasColumnName("CONTACT_ID");
-
                 entity.Property(e => e.Department)
-                    .HasMaxLength(500)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("DEPARTMENT");
 
                 entity.Property(e => e.Email)
-                    .HasMaxLength(500)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("EMAIL");
 
@@ -84,7 +78,7 @@ namespace ContactManagement
                     .HasColumnName("EVENT");
 
                 entity.Property(e => e.FirstName)
-                    .HasMaxLength(500)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("FIRST_NAME");
 
@@ -93,17 +87,17 @@ namespace ContactManagement
                     .HasColumnName("IMAGE");
 
                 entity.Property(e => e.JobTitle)
-                    .HasMaxLength(500)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("JOB_TITLE");
 
                 entity.Property(e => e.LastName)
-                    .HasMaxLength(500)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("LAST_NAME");
 
                 entity.Property(e => e.MiddleName)
-                    .HasMaxLength(500)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("MIDDLE_NAME");
 
@@ -112,15 +106,17 @@ namespace ContactManagement
                     .HasColumnName("NOTES");
 
                 entity.Property(e => e.Phone)
-                    .HasColumnType("NUMBER")
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
                     .HasColumnName("PHONE");
 
                 entity.Property(e => e.PostalCode)
-                    .HasColumnType("NUMBER")
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
                     .HasColumnName("POSTAL_CODE");
 
                 entity.Property(e => e.Relationship)
-                    .HasMaxLength(500)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("RELATIONSHIP");
 
@@ -129,54 +125,71 @@ namespace ContactManagement
                     .HasColumnName("USER_ID");
 
                 entity.Property(e => e.Website)
-                    .HasMaxLength(500)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("WEBSITE");
-
-                entity.HasOne(d => d.User)
-                    .WithMany()
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("USERID_FK");
             });
 
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<UserRrgistration>(entity =>
             {
-                entity.ToTable("USERS");
+                entity.ToTable("USER_RRGISTRATION");
 
-                entity.Property(e => e.UserId)
+                entity.Property(e => e.Id)
                     .HasColumnType("NUMBER")
-                    .HasColumnName("USER_ID");
+                    .HasColumnName("ID")
+                    .HasDefaultValueSql("\"PROJECT\".\"USER_RRGISTRATION_PK\".nextval ");
 
-                entity.Property(e => e.Authentication)
-                    .HasMaxLength(5)
-                    .IsUnicode(false)
-                    .HasColumnName("AUTHENTICATION");
+                entity.Property(e => e.Created)
+                    .HasColumnType("DATE")
+                    .HasColumnName("CREATED");
 
                 entity.Property(e => e.Email)
-                    .HasMaxLength(500)
+                    .IsRequired()
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("EMAIL");
 
-                entity.Property(e => e.FirstName)
-                    .HasMaxLength(500)
+                entity.Property(e => e.Firstname)
+                    .IsRequired()
+                    .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasColumnName("FIRST_NAME");
+                    .HasColumnName("FIRSTNAME");
 
-                entity.Property(e => e.LastName)
-                    .HasMaxLength(500)
+                entity.Property(e => e.Isauthorized)
+                    .HasMaxLength(1)
                     .IsUnicode(false)
-                    .HasColumnName("LAST_NAME");
+                    .HasColumnName("ISAUTHORIZED");
+
+                entity.Property(e => e.Lastname)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("LASTNAME");
 
                 entity.Property(e => e.Password)
-                    .HasMaxLength(8)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("PASSWORD");
 
-                entity.Property(e => e.Phone)
+                entity.Property(e => e.Phonenumber)
+                    .IsRequired()
                     .HasMaxLength(15)
                     .IsUnicode(false)
-                    .HasColumnName("PHONE");
+                    .HasColumnName("PHONENUMBER");
+
+                entity.Property(e => e.Status)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasColumnName("STATUS");
+
+                entity.Property(e => e.Updated)
+                    .HasColumnType("DATE")
+                    .HasColumnName("UPDATED");
             });
+
+            modelBuilder.HasSequence("CONTACTS_ID_PK");
+
+            modelBuilder.HasSequence("USER_RRGISTRATION_PK");
 
             OnModelCreatingPartial(modelBuilder);
         }
