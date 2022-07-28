@@ -5,15 +5,15 @@ using System.Collections.Generic;
 
 namespace ContactManagement
 {
-    public partial class UserRrgistration
+    public partial class UserRegistration
     {
         public decimal Id { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Email { get; set; }
-        public string Phonenumber { get; set; }
+        public string PhoneNumber { get; set; }
         public string Password { get; set; }
-        public string Isauthorized { get; set; }
+        public string IsAuthorized { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? Updated { get; set; }
         public string Status { get; set; }

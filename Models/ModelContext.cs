@@ -18,7 +18,7 @@ namespace ContactManagement
         }
 
         public virtual DbSet<Contact> Contacts { get; set; }
-        public virtual DbSet<UserRrgistration> UserRrgistrations { get; set; }
+        public virtual DbSet<UserRegistration> UserRegistrations { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,7 +39,7 @@ namespace ContactManagement
                 entity.ToTable("CONTACTS");
 
                 entity.Property(e => e.ContactId)
-                    .HasColumnType("NUMBER")
+                    .HasColumnType("NUMBER(38)")
                     .HasColumnName("CONTACT_ID")
                     .HasDefaultValueSql("\"PROJECT\".\"CONTACTS_ID_PK\".nextval ");
 
@@ -130,9 +130,9 @@ namespace ContactManagement
                     .HasColumnName("WEBSITE");
             });
 
-            modelBuilder.Entity<UserRrgistration>(entity =>
+            modelBuilder.Entity<UserRegistration>(entity =>
             {
-                entity.ToTable("USER_RRGISTRATION");
+                entity.ToTable("USER_REGISTRATION");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("NUMBER")
@@ -149,33 +149,33 @@ namespace ContactManagement
                     .IsUnicode(false)
                     .HasColumnName("EMAIL");
 
-                entity.Property(e => e.Firstname)
+                entity.Property(e => e.FirstName)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasColumnName("FIRSTNAME");
+                    .HasColumnName("FIRST_NAME");
 
-                entity.Property(e => e.Isauthorized)
+                entity.Property(e => e.IsAuthorized)
                     .HasMaxLength(1)
                     .IsUnicode(false)
-                    .HasColumnName("ISAUTHORIZED");
+                    .HasColumnName("IS_AUTHORIZED");
 
-                entity.Property(e => e.Lastname)
+                entity.Property(e => e.LastName)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasColumnName("LASTNAME");
+                    .HasColumnName("LAST_NAME");
 
                 entity.Property(e => e.Password)
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("PASSWORD");
 
-                entity.Property(e => e.Phonenumber)
+                entity.Property(e => e.PhoneNumber)
                     .IsRequired()
                     .HasMaxLength(15)
                     .IsUnicode(false)
-                    .HasColumnName("PHONENUMBER");
+                    .HasColumnName("PHONE_NUMBER");
 
                 entity.Property(e => e.Status)
                     .HasMaxLength(1)

@@ -1,5 +1,8 @@
+
 using ContactManagement.Interface;
 using ContactManagement.Service;
+using ContactManagement.Services;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,9 +38,12 @@ namespace ContactManagement
         {
 
             services.AddControllers();
-            services.AddDbContext<ModelContext>(options => options.UseOracle(Configuration.GetConnectionString("OracleDBConnection")));
-
-            services.AddScoped<IContact, ContactService>();
+           services.AddDbContext<ModelContext>(options => options.UseOracle(Configuration.GetConnectionString("OracleDBConnection")));
+            //ADDED
+            services.AddScoped<IUserRegistrationsService, UserRegistrationsService>();
+            services.AddScoped<IUserLoginService, UserLoginService>();
+            services.AddScoped<IAuthorizationRequestService, AuthorizationRequestService>();
+            services.AddScoped<IContactService, ContactService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ContactManagement", Version = "v1" });

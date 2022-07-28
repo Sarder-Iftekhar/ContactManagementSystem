@@ -7,7 +7,7 @@ namespace ContactManagement
 {
     public partial class Contact
     {
-        public int ContactId { get; set; }
+        public decimal ContactId { get; set; }
         public decimal? UserId { get; set; }
         public byte[] Image { get; set; }
         public string FirstName { get; set; }
